@@ -114,7 +114,15 @@ a:hover {
 }
 
 /* All caps, uppercase default for headings */
-h1, h2, h3, h4 {
+h1, h2, h3, /* Sub-headings that must not skip a level but should read as h4. */
+h3.minor {
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  margin-top: 1.4em;
+  color: var(--accent);
+}
+
+h4 {
   font-family: var(--f-mono);
   font-weight: 500;
   letter-spacing: 0.01em;

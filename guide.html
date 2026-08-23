@@ -3,24 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Guide &amp; FAQ — Mosaic</title>
-  <meta name="description" content="Install Mosaic, set up ffmpeg, and learn each output type. Answers to common questions about code signing, auto-update, and supported formats.">
+  <title>Mosaic Guide &amp; FAQ — Install, ffmpeg Setup, Output Types</title>
+  <meta name="description" content="How to install Mosaic, set up ffmpeg and MediaInfo, and use each output type. Answers on code signing, auto-update and supported video formats.">
   <link rel="canonical" href="https://mosaicvideo.github.io/guide.html">
   <meta name="theme-color" content="#060807">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Mosaic">
   <meta property="og:url" content="https://mosaicvideo.github.io/guide.html">
-  <meta property="og:title" content="Guide &amp; FAQ — Mosaic">
-  <meta property="og:description" content="Install Mosaic, set up ffmpeg, and learn each output type. Answers to common questions about code signing, auto-update, and supported formats.">
+  <meta property="og:title" content="Mosaic Guide &amp; FAQ — Install, ffmpeg Setup, Output Types">
+  <meta property="og:description" content="How to install Mosaic, set up ffmpeg and MediaInfo, and use each output type. Answers on code signing, auto-update and supported video formats.">
   <meta property="og:image" content="https://mosaicvideo.github.io/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Mosaic — batch video thumbnailer for macOS, Windows and Linux">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Guide &amp; FAQ — Mosaic">
-  <meta name="twitter:description" content="Install Mosaic, set up ffmpeg, and learn each output type. Answers to common questions about code signing, auto-update, and supported formats.">
+  <meta name="twitter:title" content="Mosaic Guide &amp; FAQ — Install, ffmpeg Setup, Output Types">
+  <meta name="twitter:description" content="How to install Mosaic, set up ffmpeg and MediaInfo, and use each output type. Answers on code signing, auto-update and supported video formats.">
   <meta name="twitter:image" content="https://mosaicvideo.github.io/assets/og-image.png">
   <meta name="twitter:image:alt" content="Mosaic — batch video thumbnailer for macOS, Windows and Linux">
   <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -270,15 +270,15 @@
         <h2 id="requirements">Requirements</h2>
         <p>Mosaic shells out to two external CLIs, both required: <strong>ffmpeg</strong> (with <code>ffprobe</code>) for extraction and tonemapping, and <strong><a href="https://mediaarea.net/en/MediaInfo">MediaInfo</a></strong> for richer header metadata (HDR format, commercial audio codec name, channel layout, language) and the per-file metadata viewer (see <a href="#mediainfo">below</a>). All three binaries — <code>ffmpeg</code>, <code>ffprobe</code>, <code>mediainfo</code> — must be on your <code>PATH</code>.</p>
 
-        <h4>macOS</h4>
+        <h3 class="minor">macOS</h3>
         <pre><code>brew install ffmpeg-full mediainfo</code></pre>
         <p>The default <code>brew install ffmpeg</code> bottle omits libfreetype and libzimg — required for text overlays and HDR tonemapping. <code>ffmpeg-full</code> has both; Mosaic automatically prefers it when installed.</p>
 
-        <h4>Windows</h4>
+        <h3 class="minor">Windows</h3>
         <pre><code>winget install Gyan.FFmpeg MediaArea.MediaInfo.CLI</code></pre>
         <p>Or via <a href="https://chocolatey.org/">Chocolatey</a>: <code>choco install ffmpeg-full mediainfo-cli</code>.</p>
 
-        <h4>Linux</h4>
+        <h3 class="minor">Linux</h3>
         <pre><code>sudo apt install ffmpeg mediainfo      # Debian / Ubuntu
 sudo dnf install ffmpeg mediainfo      # Fedora
 sudo pacman -S ffmpeg mediainfo        # Arch</code></pre>
@@ -339,7 +339,7 @@ sudo pacman -S ffmpeg mediainfo        # Arch</code></pre>
         <p>Click the gear icon in the header to configure defaults. Settings persist across launches.</p>
 
         <figure class="showcase" style="margin: 2em 0;">
-          <img class="optional-screenshot" src="assets/screenshots/settings.webp" alt="Mosaic settings panel" width="1600" height="1239" loading="lazy" decoding="async">
+          <img class="optional-screenshot" src="assets/screenshots/settings.webp" alt="Mosaic settings panel" width="1600" height="1238" loading="lazy" decoding="async">
         </figure>
 
         <p>Each output type has its own section with its own knobs — quality, dimensions, suffix for generated filenames, font choice for overlays, header fields, and format-specific encoding parameters. Theme follows your system preference automatically.</p>

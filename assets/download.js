@@ -112,19 +112,6 @@ async function upgrade() {
   setText('nav-version', `v${version}`);
   // No `v` prefix — this one sits inside real `mosaic-cli --version` output.
   setText('line-version', version);
-
-  // Point CTA "download" button at the matched OS asset if we have one.
-  const os = detectOS();
-  const osAsset = {
-    macos: find(PATTERNS.gui.macos),
-    winX64: find(PATTERNS.gui.winX64),
-    winArm64: find(PATTERNS.gui.winArm64),
-    linux: find(PATTERNS.gui.linux),
-  }[os];
-  if (osAsset) {
-    const primaryCta = document.querySelector('.cta.primary');
-    if (primaryCta) primaryCta.href = osAsset.browser_download_url;
-  }
 }
 
 // ────────────────────────────────────────────────────────────────
