@@ -206,7 +206,7 @@ grep " mosaic-cli-macos-universal$" SHA256SUMS | shasum -a 256 -c -</code></pre>
         <p>Expected output: <code>mosaic-cli-macos-universal: OK</code>. The one-liner install scripts do this automatically.</p>
 
         <h2 id="requirements">Requirements</h2>
-        <p><code>mosaic-cli</code> shells out to <code>ffmpeg</code>, <code>ffprobe</code>, and <code>mediainfo</code> — all three must be on your <code>PATH</code>. The macOS build of <code>ffmpeg</code> from Homebrew's default bottle is missing the <code>drawtext</code> filter; install <code>ffmpeg-full</code> instead.</p>
+        <p><code>mosaic-cli</code> shells out to <code>ffmpeg</code>, <code>ffprobe</code>, and <code>mediainfo</code> — all three must be on your <code>PATH</code>. The macOS build of <code>ffmpeg</code> from Homebrew's default bottle is missing the <code>drawtext</code> filter and the <code>libwebp</code> encoder; install <code>ffmpeg-full</code> instead.</p>
         <p>See <a href="guide.html#requirements">the GUI guide's Requirements section</a> for per-platform install commands.</p>
 
         <h2 id="quick-start">Quick start</h2>

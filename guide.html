@@ -39,7 +39,7 @@
       "name": "Do I really need ffmpeg separately? Why isn't it bundled?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bundling ffmpeg triples the installer size and locks you into whatever build options we picked. We recommend ffmpeg-full (which ships with libfreetype + libzimg for drawtext and HDR tonemapping). Keeping ffmpeg external lets you upgrade it independently. The app checks for ffmpeg and ffprobe on your PATH at startup. If either is missing, you'll see install instructions and a Retry button."
+        "text": "Bundling ffmpeg triples the installer size and locks you into whatever build options we picked. We recommend ffmpeg-full (which ships with libfreetype, libwebp and libzimg for text overlays, WebP output and HDR tonemapping). Keeping ffmpeg external lets you upgrade it independently. The app checks for ffmpeg, ffprobe and mediainfo on your PATH at startup. If any is missing, you'll see install instructions and a Retry button. If your ffmpeg build lacks a feature an output needs, Mosaic says which one and how to get it."
       }
     },
     {
@@ -95,7 +95,7 @@
       "name": "Do I need to install MediaInfo too?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Mosaic uses MediaInfo both to build richer contact-sheet headers (HDR format, commercial audio codec name, channel layout, language) and to power the per-file metadata viewer. Mosaic checks for mediainfo on your PATH at startup and shows the same \"required tools not found\" message as it does for missing ffmpeg. Installation is a one-liner per platform: brew install mediainfo on macOS, winget install MediaArea.MediaInfo.CLI on Windows, or apt install mediainfo on Debian and Ubuntu. See Requirements for the full list."
+        "text": "Yes. Mosaic uses MediaInfo both to build richer contact-sheet headers (HDR format, commercial audio codec name, channel layout, language) and to power the per-file metadata viewer. Mosaic checks for mediainfo on your PATH at startup and shows the same \"required tools not found\" message as it does for missing ffmpeg. Installation is a one-liner per platform: brew install mediainfo on macOS, winget install MediaArea.MediaInfo on Windows, or apt install mediainfo on Debian and Ubuntu. See Requirements for the full list."
       }
     },
     {
@@ -103,7 +103,7 @@
       "name": "Which video formats are supported?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "45 container types — anything ffmpeg can decode. This includes common formats (MP4, MKV, MOV, AVI, WebM, M4V), broadcast (MXF, R3D), transport streams (TS, M2TS), camcorder formats (DV, WTV), and legacy containers. If ffmpeg can probe it, Mosaic can process it."
+        "text": "43 container types — anything ffmpeg can decode. This includes common formats (MP4, MKV, MOV, AVI, WebM, M4V), broadcast (MXF, GXF), transport streams (TS, M2TS), camcorder formats (DV, WTV), and legacy containers. If ffmpeg can probe it, Mosaic can process it."
       }
     },
     {
@@ -272,17 +272,17 @@
 
         <h3 class="minor">macOS</h3>
         <pre><code>brew install ffmpeg-full mediainfo</code></pre>
-        <p>The default <code>brew install ffmpeg</code> bottle omits libfreetype and libzimg — required for text overlays and HDR tonemapping. <code>ffmpeg-full</code> has both; Mosaic automatically prefers it when installed.</p>
+        <p>The default <code>brew install ffmpeg</code> bottle omits libfreetype, libwebp and libzimg — required for text overlays, WebP output and HDR tonemapping. <code>ffmpeg-full</code> has all three; Mosaic automatically prefers it when installed.</p>
 
         <h3 class="minor">Windows</h3>
-        <pre><code>winget install Gyan.FFmpeg MediaArea.MediaInfo.CLI</code></pre>
+        <pre><code>winget install Gyan.FFmpeg MediaArea.MediaInfo</code></pre>
         <p>Or via <a href="https://chocolatey.org/">Chocolatey</a>: <code>choco install ffmpeg-full mediainfo-cli</code>.</p>
 
         <h3 class="minor">Linux</h3>
         <pre><code>sudo apt install ffmpeg mediainfo      # Debian / Ubuntu
 sudo dnf install ffmpeg mediainfo      # Fedora
 sudo pacman -S ffmpeg mediainfo        # Arch</code></pre>
-        <p>Most distro packages already ship ffmpeg with libfreetype and libzimg enabled.</p>
+        <p>Most distro packages already ship ffmpeg with libfreetype, libwebp and libzimg enabled.</p>
 
         <h2 id="first-run">First run</h2>
         <ol>
@@ -373,8 +373,8 @@ irm https://mosaicvideo.github.io/install.ps1 | iex</code></pre>
           <details class="faq-item">
             <summary data-num="01">Do I really need ffmpeg separately? Why isn't it bundled?</summary>
             <div class="faq-body">
-              <p>Bundling ffmpeg triples the installer size and locks you into whatever build options we picked. We recommend <code>ffmpeg-full</code> (which ships with libfreetype + libzimg for drawtext and HDR tonemapping). Keeping ffmpeg external lets you upgrade it independently.</p>
-              <p>The app checks for <code>ffmpeg</code> and <code>ffprobe</code> on your <code>PATH</code> at startup. If either is missing, you'll see install instructions and a <em>Retry</em> button.</p>
+              <p>Bundling ffmpeg triples the installer size and locks you into whatever build options we picked. We recommend <code>ffmpeg-full</code> (which ships with libfreetype, libwebp and libzimg for text overlays, WebP output and HDR tonemapping). Keeping ffmpeg external lets you upgrade it independently.</p>
+              <p>The app checks for <code>ffmpeg</code>, <code>ffprobe</code> and <code>mediainfo</code> on your <code>PATH</code> at startup. If any is missing, you'll see install instructions and a <em>Retry</em> button. If your ffmpeg build lacks a feature an output needs, Mosaic says which one and how to get it.</p>
             </div>
           </details>
 
@@ -438,14 +438,14 @@ irm https://mosaicvideo.github.io/install.ps1 | iex</code></pre>
             <summary data-num="08">Do I need to install MediaInfo too?</summary>
             <div class="faq-body">
               <p>Yes. Mosaic uses MediaInfo both to build richer contact-sheet headers (HDR format, commercial audio codec name, channel layout, language) and to power the per-file metadata viewer. Mosaic checks for <code>mediainfo</code> on your <code>PATH</code> at startup and shows the same "required tools not found" message as it does for missing ffmpeg.</p>
-              <p>Installation is a one-liner per platform: <code>brew install mediainfo</code> on macOS, <code>winget install MediaArea.MediaInfo.CLI</code> on Windows, or <code>apt install mediainfo</code> on Debian and Ubuntu. See <a href="#requirements">Requirements</a> for the full list.</p>
+              <p>Installation is a one-liner per platform: <code>brew install mediainfo</code> on macOS, <code>winget install MediaArea.MediaInfo</code> on Windows, or <code>apt install mediainfo</code> on Debian and Ubuntu. See <a href="#requirements">Requirements</a> for the full list.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary data-num="09">Which video formats are supported?</summary>
             <div class="faq-body">
-              <p>45 container types — anything ffmpeg can decode. This includes common formats (MP4, MKV, MOV, AVI, WebM, M4V), broadcast (MXF, R3D), transport streams (TS, M2TS), camcorder formats (DV, WTV), and legacy containers. If ffmpeg can probe it, Mosaic can process it.</p>
+              <p>43 container types — anything ffmpeg can decode. This includes common formats (MP4, MKV, MOV, AVI, WebM, M4V), broadcast (MXF, GXF), transport streams (TS, M2TS), camcorder formats (DV, WTV), and legacy containers. If ffmpeg can probe it, Mosaic can process it.</p>
             </div>
           </details>
 
