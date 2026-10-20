@@ -6,7 +6,8 @@
   <title>mosaic-cli — Video Contact Sheets from the Command Line</title>
   <meta name="description" content="Install and use mosaic-cli: contact sheets, screenshots, animated previews and probes from your terminal. One-liner install for macOS, Linux and Windows.">
   <link rel="canonical" href="https://mosaicvideo.github.io/cli.html">
-  <meta name="theme-color" content="#060807">
+  <meta name="theme-color" content="#fcfcfd" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181c" media="(prefers-color-scheme: dark)">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Mosaic">
@@ -24,10 +25,18 @@
   <meta name="twitter:image" content="https://mosaicvideo.github.io/assets/og-image.png">
   <meta name="twitter:image:alt" content="Mosaic — batch video thumbnailer for macOS, Windows and Linux">
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+  <script>
+    (function () {
+      var classes = document.documentElement.classList;
+      classes.add('js');
+      try {
+        var appearance = localStorage.getItem('appearance');
+        if (appearance === 'light' || appearance === 'dark') classes.add(appearance);
+      } catch (error) {}
+    })();
+  </script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,29 +96,38 @@
 </script>
 </head>
 <body>
+<a href="#content" class="skip">Skip to content</a>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="./" class="nav-brand">
-      <span class="nav-brand-text">mosaic</span>
-      <span class="nav-brand-version" id="nav-version">v0.1.6</span>
+<div class="container">
+  <header class="header">
+    <a href="./" class="brand">
+      <img src="assets/icon.png" alt="" width="32" height="32">
+      Mosaic
     </a>
-    <div class="nav-links">
-      <a href="guide.html">guide</a>
-      <a href="cli.html" class="active">cli</a>
-      <a href="guide.html#faq">faq</a>
-      <a href="https://github.com/mosaicvideo/mosaic/blob/main/CHANGELOG.md">log</a>
-      <a href="https://github.com/mosaicvideo/mosaic">git</a>
+    <nav class="nav" aria-label="Main">
+      <a href="guide.html">Guide</a>
+      <a href="cli.html" aria-current="page">CLI</a>
+      <a class="wide-only" href="https://github.com/mosaicvideo/mosaic">GitHub</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="Theme" data-theme-switch data-needs-js>
+      <button type="button" data-appearance="light" aria-pressed="false" title="Light theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <span class="skip">Light theme</span>
+      </button>
+      <button type="button" data-appearance="dark" aria-pressed="false" title="Dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <span class="skip">Dark theme</span>
+      </button>
+      <button type="button" data-appearance="system" aria-pressed="true" title="System theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span class="skip">System theme</span>
+      </button>
     </div>
-  </div>
-</nav>
+  </header>
 
-<main>
-  <div class="container">
-    <div class="guide-layout">
-
-      <aside class="guide-toc" aria-label="Table of contents">
-        <div class="guide-toc-heading">Contents</div>
+  <main id="content" class="doc">
+      <aside class="toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
         <ul>
           <li><a href="#install">Install</a>
             <ul>
@@ -123,6 +141,7 @@
           <li><a href="#quick-start">Quick start</a></li>
           <li><a href="#subcommands">Subcommands</a>
             <ul>
+              <li><a href="#shared-options">Shared options</a></li>
               <li><a href="#sub-screenshots">screenshots</a></li>
               <li><a href="#sub-sheet">sheet</a></li>
               <li><a href="#sub-reel">reel</a></li>
@@ -141,7 +160,7 @@
         </ul>
       </aside>
 
-      <article class="guide-content">
+      <article class="prose">
 
         <h1>mosaic-cli</h1>
         <p class="lede">Every Mosaic pipeline from the terminal — scripts, CI jobs, headless servers. Same ffmpeg pipelines as the desktop app, no UI.</p>
@@ -161,39 +180,11 @@
 
         <h3 id="install-manual">Manual download</h3>
         <p>If you'd rather avoid the one-liner, grab a binary directly from the latest release:</p>
-        <div class="dl-table" role="list">
-          <div class="dl-row" data-key="macos">
-            <a id="cli-btn-macos" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-              <div class="dl-index">01.</div>
-              <div class="dl-tag">mac</div>
-              <div class="dl-path">mosaic-cli-macos-universal</div>
-              <div class="dl-size">--</div>
-            </a>
-          </div>
-          <div class="dl-row" data-key="win-x64">
-            <a id="cli-btn-win-x64" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-              <div class="dl-index">02.</div>
-              <div class="dl-tag">windows</div>
-              <div class="dl-path">mosaic-cli-windows-x86_64.exe</div>
-              <div class="dl-size">--</div>
-            </a>
-          </div>
-          <div class="dl-row" data-key="win-arm">
-            <a id="cli-btn-win-arm" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-              <div class="dl-index">03.</div>
-              <div class="dl-tag">win-arm</div>
-              <div class="dl-path">mosaic-cli-windows-aarch64.exe</div>
-              <div class="dl-size">--</div>
-            </a>
-          </div>
-          <div class="dl-row" data-key="linux">
-            <a id="cli-btn-linux" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-              <div class="dl-index">04.</div>
-              <div class="dl-tag">linux</div>
-              <div class="dl-path">mosaic-cli-linux-x86_64</div>
-              <div class="dl-size">--</div>
-            </a>
-          </div>
+        <div class="dl-list">
+          <a id="cli-btn-macos" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">macOS, Apple Silicon and Intel</span><span class="dl-size"></span></a>
+          <a id="cli-btn-win-x64" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Windows x64</span><span class="dl-size"></span></a>
+          <a id="cli-btn-win-arm" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Windows Arm</span><span class="dl-size"></span></a>
+          <a id="cli-btn-linux" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Linux x64</span><span class="dl-size"></span></a>
         </div>
         <p>On macOS/Linux, make executable and move onto PATH:</p>
         <pre><code>chmod +x mosaic-cli-*
@@ -225,28 +216,38 @@ mosaic-cli animated-sheet --cols 4 --rows 3 movie.mkv</code></pre>
 
         <h2 id="subcommands">Subcommands</h2>
 
+        <h3 id="shared-options">Options every output command takes</h3>
+        <p><code>screenshots</code>, <code>sheet</code>, <code>reel</code> and <code>animated-sheet</code> all accept:</p>
+        <ul>
+          <li><code>-o, --output DIR</code> — output directory (default: next to each source)</li>
+          <li><code>--no-recursive</code> — don't look inside subfolders when an input is a folder</li>
+          <li><code>-q, --quiet</code> — hide the progress bars</li>
+          <li><code>-v, --verbose</code> — print the ffmpeg arguments before each run</li>
+        </ul>
+
         <h3 id="sub-screenshots"><code>screenshots</code></h3>
         <p>Capture individual frames from a video at evenly-spaced timestamps.</p>
-        <pre><code>mosaic-cli screenshots [OPTIONS] &lt;INPUT&gt;...</code></pre>
+        <pre><code>mosaic-cli screenshots [OPTIONS] &lt;INPUTS&gt;...</code></pre>
         <p>Common flags:</p>
         <ul>
           <li><code>--count N</code> — number of frames (default: <strong>8</strong>)</li>
           <li><code>--format png|jpeg</code> — output format (default: <strong>png</strong>)</li>
           <li><code>--quality N</code> — JPEG quality 50–100 (default: <strong>92</strong>)</li>
           <li><code>--suffix S</code> — filename infix between stem and index (default: <strong><code>_screens_</code></strong>)</li>
-          <li><code>-o DIR</code> — output directory (default: next to each source)</li>
         </ul>
         <pre><code>mosaic-cli screenshots --count 20 --format jpeg --quality 90 -o shots/ movie.mkv</code></pre>
 
         <h3 id="sub-sheet"><code>sheet</code></h3>
         <p>Generate a still contact sheet — a grid of thumbnails with an optional metadata header.</p>
-        <pre><code>mosaic-cli sheet [OPTIONS] &lt;INPUT&gt;...</code></pre>
+        <pre><code>mosaic-cli sheet [OPTIONS] &lt;INPUTS&gt;...</code></pre>
         <p>Common flags:</p>
         <ul>
           <li><code>--cols N</code> — columns (default: <strong>3</strong>)</li>
           <li><code>--rows N</code> — rows (default: <strong>6</strong>)</li>
           <li><code>--width PX</code> — total sheet width (default: <strong>1920</strong>)</li>
           <li><code>--gap PX</code> — thumbnail spacing (default: <strong>10</strong>)</li>
+          <li><code>--thumb-font PT</code> — timestamp text size (default: <strong>18</strong>)</li>
+          <li><code>--header-font PT</code> — header text size (default: <strong>20</strong>)</li>
           <li><code>--format png|jpeg</code> — output format (default: <strong>png</strong>)</li>
           <li><code>--quality N</code> — JPEG quality 50–100 (default: <strong>92</strong>)</li>
           <li><code>--theme dark|light</code> — color theme (default: <strong>dark</strong>)</li>
@@ -258,7 +259,7 @@ mosaic-cli animated-sheet --cols 4 --rows 3 movie.mkv</code></pre>
 
         <h3 id="sub-reel"><code>reel</code></h3>
         <p>Stitch short clips into a single animated preview reel (WebP/WebM/GIF).</p>
-        <pre><code>mosaic-cli reel [OPTIONS] &lt;INPUT&gt;...</code></pre>
+        <pre><code>mosaic-cli reel [OPTIONS] &lt;INPUTS&gt;...</code></pre>
         <p>Common flags:</p>
         <ul>
           <li><code>--count N</code> — number of clips (default: <strong>15</strong>)</li>
@@ -273,7 +274,7 @@ mosaic-cli animated-sheet --cols 4 --rows 3 movie.mkv</code></pre>
 
         <h3 id="sub-animated-sheet"><code>animated-sheet</code></h3>
         <p>Grid of animated clips — a contact sheet where every cell is a short looping WebP. Output is always WebP.</p>
-        <pre><code>mosaic-cli animated-sheet [OPTIONS] &lt;INPUT&gt;...</code></pre>
+        <pre><code>mosaic-cli animated-sheet [OPTIONS] &lt;INPUTS&gt;...</code></pre>
         <p>Common flags:</p>
         <ul>
           <li><code>--cols N</code> — columns (default: <strong>3</strong>)</li>
@@ -282,7 +283,11 @@ mosaic-cli animated-sheet --cols 4 --rows 3 movie.mkv</code></pre>
           <li><code>--gap PX</code> — thumbnail spacing (default: <strong>8</strong>)</li>
           <li><code>--clip-length SECS</code> — seconds per animated cell (default: <strong>2</strong>)</li>
           <li><code>--fps N</code> — animated frame rate (default: <strong>12</strong>)</li>
-          <li><code>--quality N</code> — WebP encoder quality (default: <strong>75</strong>)</li>
+          <li><code>--quality N</code> — WebP encoder quality 0–100 (default: <strong>75</strong>)</li>
+          <li><code>--thumb-font PT</code> — timestamp text size (default: <strong>14</strong>)</li>
+          <li><code>--header-font PT</code> — header text size (default: <strong>18</strong>)</li>
+          <li><code>--no-timestamps</code> / <code>--timestamps</code> — toggle per-thumbnail timestamp overlay</li>
+          <li><code>--no-header</code> / <code>--header</code> — toggle the metadata header band</li>
           <li><code>--theme dark|light</code> — color theme (default: <strong>dark</strong>)</li>
           <li><code>--suffix S</code> — filename infix (default: <strong><code>_animated_sheet</code></strong>)</li>
         </ul>
@@ -321,7 +326,7 @@ suffix = "_thumbs"
 count = 12
 clip_length_secs = 3
 format = "gif"</code></pre>
-        <p class="callout">Note: the config key for reel/animated-sheet clip duration is <code>clip_length_secs</code> (TOML convention, unit explicit), while the CLI flag is <code>--clip-length</code>. The difference is intentional.</p>
+        <p class="note">Note: the config key for reel/animated-sheet clip duration is <code>clip_length_secs</code> (TOML convention, unit explicit), while the CLI flag is <code>--clip-length</code>. The difference is intentional.</p>
 
         <h2 id="completions">Shell completions</h2>
 
@@ -383,17 +388,19 @@ rm ~/.mosaic-cli.toml           # optional: config file</code></pre>
         <pre><code>curl -LsSf https://mosaicvideo.github.io/install.sh | MOSAIC_VERSION=v0.1.5 sh</code></pre>
 
       </article>
-    </div>
-  </div>
-</main>
+  </main>
 
-<footer class="footer">
-  <div class="footer-inner">
-    <span>mosaic — <a href="https://github.com/mosaicvideo/mosaic">github.com/mosaicvideo/mosaic</a></span>
-    <span>MIT license</span>
-  </div>
-</footer>
+  <footer class="footer">
+    <span>Mosaic is open source under the MIT license. It needs <a class="link" href="guide.html#requirements">ffmpeg and MediaInfo</a> installed.</span>
+    <ul>
+      <li><a href="https://github.com/mosaicvideo/mosaic">GitHub</a></li>
+      <li><a href="https://github.com/mosaicvideo/mosaic/issues">Issues</a></li>
+      <li><a href="https://github.com/mosaicvideo/mosaic/blob/main/CHANGELOG.md">Changelog</a></li>
+    </ul>
+  </footer>
+</div>
 
+<script src="assets/theme.js" defer></script>
 <script src="assets/download.js" defer></script>
 </body>
 </html>

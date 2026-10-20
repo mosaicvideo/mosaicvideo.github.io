@@ -1,8 +1,6 @@
-// Mosaic showcase — lightweight upgrade layer.
-// The terminal content renders statically in HTML; this script fills
-// in real release URLs, asset sizes, version strings, and highlights
-// the row that matches the visitor's OS. Fails silently so the static
-// fallback always works.
+// Fills in real release URLs, sizes and the version, and labels the main
+// download button for the visitor's OS. Fails silently so the static
+// fallback links always work.
 
 const REPO = 'mosaicvideo/mosaic';
 const API = `https://api.github.com/repos/${REPO}/releases/latest`;
@@ -59,6 +57,19 @@ function highlightOS() {
 // Release upgrade — real URLs, sizes, version string.
 // ────────────────────────────────────────────────────────────────
 
+const PRIMARY = {
+  macos:    { label: 'Download for macOS',   pattern: PATTERNS.gui.macos },
+  winX64:   { label: 'Download for Windows', pattern: PATTERNS.gui.winX64 },
+  winArm64: { label: 'Download for Windows', pattern: PATTERNS.gui.winArm64 },
+  linux:    { label: 'Download for Linux',   pattern: PATTERNS.gui.linux },
+};
+
+function labelPrimary() {
+  const primary = PRIMARY[detectOS()];
+  const label = document.getElementById('dl-primary-label');
+  if (primary && label) label.textContent = primary.label;
+}
+
 function humanSize(bytes) {
   if (!bytes && bytes !== 0) return '--';
   const mb = bytes / (1024 * 1024);
@@ -99,6 +110,11 @@ async function upgrade() {
   setRow('btn-linux-deb',   find(PATTERNS.gui.linuxDeb));
   setRow('btn-linux-rpm',   find(PATTERNS.gui.linuxRpm));
 
+  const primary = PRIMARY[detectOS()];
+  const primaryAsset = primary && find(primary.pattern);
+  const primaryButton = document.getElementById('dl-primary');
+  if (primaryAsset && primaryButton) primaryButton.href = primaryAsset.browser_download_url;
+
   // CLI binary rows
   setRow('cli-btn-macos',   find(PATTERNS.cli.macos));
   setRow('cli-btn-win-x64', find(PATTERNS.cli.winX64));
@@ -108,29 +124,12 @@ async function upgrade() {
   const version = release.tag_name?.replace(/^v/, '');
   if (!version) return;
   const setText = (id, text) => { const n = document.getElementById(id); if (n) n.textContent = text; };
-  setText('version-badge', `v${version}`);
   setText('nav-version', `v${version}`);
-  // No `v` prefix — this one sits inside real `mosaic-cli --version` output.
-  setText('line-version', version);
-}
-
-// ────────────────────────────────────────────────────────────────
-// Hide missing optional screenshots cleanly.
-// ────────────────────────────────────────────────────────────────
-
-function hideBrokenImages() {
-  document.querySelectorAll('img.optional-screenshot').forEach(img => {
-    img.addEventListener('error', () => {
-      const parent = img.closest('.showcase, .output-type-media, figure');
-      if (parent) parent.style.display = 'none';
-      else img.style.display = 'none';
-    });
-  });
 }
 
 function init() {
-  hideBrokenImages();
   highlightOS();
+  labelPrimary();
   upgrade();
 }
 

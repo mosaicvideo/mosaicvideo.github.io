@@ -6,7 +6,8 @@
   <title>Video Contact Sheet &amp; Thumbnail Generator — Mosaic</title>
   <meta name="description" content="Batch-generate video contact sheets, screenshots and animated previews on macOS, Windows and Linux. Free, open source, powered by your local ffmpeg.">
   <link rel="canonical" href="https://mosaicvideo.github.io/">
-  <meta name="theme-color" content="#060807">
+  <meta name="theme-color" content="#fcfcfd" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181c" media="(prefers-color-scheme: dark)">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Mosaic">
@@ -24,10 +25,18 @@
   <meta name="twitter:image" content="https://mosaicvideo.github.io/assets/og-image.png">
   <meta name="twitter:image:alt" content="Mosaic — batch video thumbnailer for macOS, Windows and Linux">
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+  <script>
+    (function () {
+      var classes = document.documentElement.classList;
+      classes.add('js');
+      try {
+        var appearance = localStorage.getItem('appearance');
+        if (appearance === 'light' || appearance === 'dark') classes.add(appearance);
+      } catch (error) {}
+    })();
+  </script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -53,7 +62,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "screenshot": "https://mosaicvideo.github.io/assets/screenshots/hero.webp",
+  "screenshot": "https://mosaicvideo.github.io/assets/screenshots/app-light.webp",
   "image": "https://mosaicvideo.github.io/assets/og-image.png",
   "featureList": [
     "Contact sheets — grid of timestamped frames at configurable rows and columns (PNG, JPEG)",
@@ -105,337 +114,169 @@
 </script>
 </head>
 <body>
+<a href="#content" class="skip">Skip to content</a>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="./" class="nav-brand">
-      <span class="nav-brand-text">mosaic</span>
-      <span class="nav-brand-version" id="nav-version">v0.1.6</span>
+<div class="container">
+  <header class="header">
+    <a href="./" class="brand">
+      <img src="assets/icon.png" alt="" width="32" height="32">
+      Mosaic
     </a>
-    <div class="nav-links">
-      <a href="guide.html">guide</a>
-      <a href="cli.html">cli</a>
-      <a href="guide.html#faq">faq</a>
-      <a href="https://github.com/mosaicvideo/mosaic/blob/main/CHANGELOG.md">log</a>
-      <a href="https://github.com/mosaicvideo/mosaic">git</a>
+    <nav class="nav" aria-label="Main">
+      <a href="guide.html">Guide</a>
+      <a href="cli.html">CLI</a>
+      <a class="wide-only" href="https://github.com/mosaicvideo/mosaic">GitHub</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="Theme" data-theme-switch data-needs-js>
+      <button type="button" data-appearance="light" aria-pressed="false" title="Light theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <span class="skip">Light theme</span>
+      </button>
+      <button type="button" data-appearance="dark" aria-pressed="false" title="Dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <span class="skip">Dark theme</span>
+      </button>
+      <button type="button" data-appearance="system" aria-pressed="true" title="System theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span class="skip">System theme</span>
+      </button>
     </div>
-  </div>
-</nav>
+  </header>
 
-<main>
+  <main id="content">
+    <section class="hero">
+      <h1>Video contact sheet &amp; thumbnail generator</h1>
+      <p class="hero-lede">Mosaic turns a folder of videos into contact sheets, screenshots and animated previews, in batches, on your own machine.</p>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero">
-    <div class="hero-inner">
+      <div class="hero-actions">
+        <a class="button button-primary" id="dl-primary" href="https://github.com/mosaicvideo/mosaic/releases/latest">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 10l5 5 5-5M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+          <span id="dl-primary-label">Download Mosaic</span>
+        </a>
+        <a class="button button-quiet" href="guide.html">Read the guide</a>
+      </div>
+      <p class="hero-meta"><span id="nav-version">v0.1.7</span> · Free and open source · macOS, Windows, Linux</p>
 
-      <div class="hero-eyebrow">macOS · Windows · Linux — free &amp; open source</div>
-
-      <h1 class="hero-h1">Video contact sheet &amp; thumbnail generator</h1>
-
-      <p class="hero-lede">Mosaic turns any video into a contact sheet, a set of screenshots, or an animated preview — in batches, on your own machine. Drop in a folder, pick what to produce, walk away. Every pipeline drives your local <code>ffmpeg</code>, so nothing is ever uploaded anywhere.</p>
-
-      <div class="dl-hero">
-        <div class="dl-cards">
-          <a class="dl-card" id="btn-macos" data-key="macos" href="https://github.com/mosaicvideo/mosaic/releases/latest">
-            <span class="dl-card-os">mac</span>
-            <span class="dl-path">mosaic_universal.dmg</span>
-            <span class="dl-size">--</span>
-          </a>
-          <a class="dl-card" id="btn-win" data-key="win-x64" href="https://github.com/mosaicvideo/mosaic/releases/latest">
-            <span class="dl-card-os">windows</span>
-            <span class="dl-path">mosaic_x64-setup.exe</span>
-            <span class="dl-size">--</span>
-          </a>
-          <a class="dl-card" id="btn-win-arm" data-key="win-arm" href="https://github.com/mosaicvideo/mosaic/releases/latest">
-            <span class="dl-card-os">win-arm</span>
-            <span class="dl-path">mosaic_arm64-setup.exe</span>
-            <span class="dl-size">--</span>
-          </a>
-          <a class="dl-card" id="btn-linux" data-key="linux" href="https://github.com/mosaicvideo/mosaic/releases/latest">
-            <span class="dl-card-os">linux</span>
-            <span class="dl-path">mosaic_amd64.AppImage</span>
-            <span class="dl-size">--</span>
-          </a>
+      <details class="downloads">
+        <summary>Other platforms and the CLI</summary>
+        <div class="dl-list">
+          <h3>Desktop app</h3>
+          <a id="btn-macos" data-key="macos" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">macOS (.dmg)</span><span class="dl-size"></span></a>
+          <a id="btn-linux" data-key="linux" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Linux (.AppImage)</span><span class="dl-size"></span></a>
+          <a id="btn-win" data-key="win-x64" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Windows x64 (.exe)</span><span class="dl-size"></span></a>
+          <a id="btn-linux-deb" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Debian, Ubuntu (.deb)</span><span class="dl-size"></span></a>
+          <a id="btn-win-arm" data-key="win-arm" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Windows Arm (.exe)</span><span class="dl-size"></span></a>
+          <a id="btn-linux-rpm" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">Fedora (.rpm)</span><span class="dl-size"></span></a>
+          <h3>Command line</h3>
+          <a id="cli-btn-macos" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">mosaic-cli for macOS</span><span class="dl-size"></span></a>
+          <a id="cli-btn-linux" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">mosaic-cli for Linux</span><span class="dl-size"></span></a>
+          <a id="cli-btn-win-x64" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">mosaic-cli for Windows x64</span><span class="dl-size"></span></a>
+          <a id="cli-btn-win-arm" href="https://github.com/mosaicvideo/mosaic/releases/latest"><span class="dl-name">mosaic-cli for Windows Arm</span><span class="dl-size"></span></a>
         </div>
+      </details>
 
-        <details class="dl-more">
-          <summary>other formats — .msi, .deb, .rpm, CLI binaries</summary>
-          <div class="dl-more-body">
-            <div class="dl-table" role="list">
-              <div class="dl-group">Desktop app</div>
-              <div class="dl-row">
-                <a id="btn-win-msi" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">01.</div><div class="dl-tag">win x64</div><div class="dl-path">mosaic_x64_en-US.msi</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-row">
-                <a id="btn-win-arm-msi" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">02.</div><div class="dl-tag">win arm</div><div class="dl-path">mosaic_arm64_en-US.msi</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-row">
-                <a id="btn-linux-deb" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">03.</div><div class="dl-tag">debian</div><div class="dl-path">mosaic_amd64.deb</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-row">
-                <a id="btn-linux-rpm" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">04.</div><div class="dl-tag">fedora</div><div class="dl-path">mosaic.x86_64.rpm</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-group">mosaic-cli</div>
-              <div class="dl-row">
-                <a id="cli-btn-macos" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">05.</div><div class="dl-tag">macos</div><div class="dl-path">mosaic-cli-macos-universal</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-row">
-                <a id="cli-btn-linux" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">06.</div><div class="dl-tag">linux</div><div class="dl-path">mosaic-cli-linux-x86_64</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-row">
-                <a id="cli-btn-win-x64" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">07.</div><div class="dl-tag">win x64</div><div class="dl-path">mosaic-cli-windows-x86_64.exe</div><div class="dl-size">--</div>
-                </a>
-              </div>
-              <div class="dl-row">
-                <a id="cli-btn-win-arm" href="https://github.com/mosaicvideo/mosaic/releases/latest" role="listitem">
-                  <div class="dl-index">08.</div><div class="dl-tag">win arm</div><div class="dl-path">mosaic-cli-windows-aarch64.exe</div><div class="dl-size">--</div>
-                </a>
-              </div>
-            </div>
-            <p class="dl-verify">Verify any download against <a href="https://github.com/mosaicvideo/mosaic/releases/latest/download/SHA256SUMS">SHA256SUMS</a>, or see <a href="https://github.com/mosaicvideo/mosaic/releases/latest">the full release</a>.</p>
+      <div class="hero-shot">
+          <img class="light-only" src="assets/screenshots/app-light.webp" width="1600" height="1152" alt="The Mosaic window making contact sheets and screenshots for a queue of seven videos" decoding="async">
+          <img class="dark-only" src="assets/screenshots/app-dark.webp" width="1600" height="1152" alt="The Mosaic window making contact sheets and screenshots for a queue of seven videos" loading="lazy" decoding="async">
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="outputs-heading">
+      <div class="section-head">
+        <h2 id="outputs-heading">Contact sheets, screenshots and animated previews</h2>
+        <p>Pick any mix of them and Mosaic makes each one for every video in the queue.</p>
+      </div>
+      <ul class="gallery">
+        <li class="card output">
+          <div class="output-media">
+            <img src="assets/screenshots/output-contact-sheet.webp" width="1200" height="1443" alt="A contact sheet: a grid of timestamped frames under a header of file details" loading="lazy">
           </div>
-        </details>
-
-        <p class="dl-req">Requires <code>ffmpeg</code>, <code>ffprobe</code> and <code>mediainfo</code> on your <code>PATH</code> — <code>brew install ffmpeg-full mediainfo</code>. <a href="guide.html#requirements">Full requirements →</a></p>
-      </div>
-
-      <div class="hero-prose">
-        <div class="hero-note">
-          <h2>What is a contact sheet?</h2>
-          <p>A single image holding a grid of frames sampled evenly across a video, each stamped with its timestamp. One glance tells you what a file contains and whether the encode holds up — without scrubbing a player. Archivists, editors and encoders use them as a visual index.</p>
-        </div>
-        <div class="hero-note">
-          <h2>Why a desktop app?</h2>
-          <p>Tools for this have existed for years, but nearly all are command-line only, Linux only, or unmaintained. Mosaic is native on <strong>macOS, Windows and Linux</strong>: drag-and-drop queue, live per-file progress, and a cancel button that genuinely stops work mid-encode.</p>
-        </div>
-        <div class="hero-note">
-          <h2>Handles the awkward files</h2>
-          <p><strong>HDR10</strong>, <strong>HLG</strong> and <strong>Dolby Vision</strong> (including Profile 5) are tonemapped to clean SDR automatically, so sheets are not washed-out grey. <strong>MediaInfo</strong> enrichment gives real codec names — <em>Dolby Digital Plus</em>, not <code>eac3</code>.</p>
-        </div>
-      </div>
-
-      <div class="cta-row">
-        <a class="cta" href="guide.html">read the manual</a>
-        <a class="cta" href="https://github.com/mosaicvideo/mosaic">source on github</a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============ OUTPUT TYPES ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-path">~/mosaic/output-types</div>
-        <h2 class="section-title">4 output types, 1 batch queue</h2>
-        <p class="section-sub">Drop videos or folders, pick what to produce, walk away. Every pipeline runs your local ffmpeg — nothing leaves the machine.</p>
-      </div>
-
-      <div class="fs" role="list">
-        <div class="fs-head">
-          <div>IDX</div>
-          <div>NAME</div>
-          <div>DESCRIPTION</div>
-          <div>OUTPUT</div>
-        </div>
-
-        <div class="fs-row" role="listitem">
-          <div class="fs-idx">01.</div>
-          <div class="fs-name">contact_sheets/</div>
-          <div class="fs-desc">Grid of timestamped frames at configurable rows × columns. Ideal for archival indexes or preview catalogs.</div>
-          <div class="fs-meta">PNG · JPEG</div>
-        </div>
-
-        <div class="fs-row" role="listitem">
-          <div class="fs-idx">02.</div>
-          <div class="fs-name">screenshots/</div>
-          <div class="fs-desc">Individual frames at evenly-spaced timestamps, with configurable count. Full-resolution, numbered, named after the source video.</div>
-          <div class="fs-meta">PNG · JPEG</div>
-        </div>
-
-        <div class="fs-row" role="listitem">
-          <div class="fs-idx">03.</div>
-          <div class="fs-name">animated_reels/</div>
-          <div class="fs-desc">Short clips stitched end-to-end into a single reel. Motion preview without opening a video player.</div>
-          <div class="fs-meta">WebP · WebM · GIF</div>
-        </div>
-
-        <div class="fs-row" role="listitem">
-          <div class="fs-idx">04.</div>
-          <div class="fs-name">animated_sheets/</div>
-          <div class="fs-desc">Grid of animated thumbnail clips — every cell loops a short motion clip. Motion at a glance, contact-sheet layout.</div>
-          <div class="fs-meta">WebP</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ FLAGS (Why) ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-path">~/mosaic/flags</div>
-        <h2 class="section-title">Built for real work</h2>
-        <p class="section-sub">Four decisions that shape how Mosaic behaves under load.</p>
-      </div>
-
-      <div class="flags">
-        <div class="flag">
-          <div class="flag-key">batch-queue</div>
-          <div class="flag-body">Drop folders. Per-file progress. Cancel at any point without corrupting in-flight outputs.</div>
-        </div>
-        <div class="flag">
-          <div class="flag-key">hdr-tonemap</div>
-          <div class="flag-body">HDR10, HLG, and Dolby Vision videos produce clean SDR thumbnails without a manual tonemap step.</div>
-        </div>
-        <div class="flag">
-          <div class="flag-key">local-only</div>
-          <div class="flag-body">Videos never leave the machine. Zero analytics. The only network call is an update check against GitHub's public API.</div>
-        </div>
-        <div class="flag">
-          <div class="flag-key">mosaic-cli</div>
-          <div class="flag-body">Every pipeline as a subcommand — <code>screenshots</code>, <code>sheet</code>, <code>reel</code>, <code>animated-sheet</code>, <code>probe</code>. Stdout is paths-only so it pipes cleanly into <code>xargs</code>. <a href="#cli">Demo →</a></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ SHOWCASE ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-path">~/mosaic/screenshots/app.png</div>
-        <h2 class="section-title">The app</h2>
-        <p class="section-sub">Minimal by design. Dark-by-default, follows your system theme. Native on every platform.</p>
-      </div>
-
-      <div class="showcase">
-        <div class="showcase-frame">
-          <img class="optional-screenshot" src="assets/screenshots/hero.webp" alt="Mosaic app window showing a drag-and-drop batch queue with video files processing" width="1600" height="1197" loading="lazy" decoding="async">
-        </div>
-        <div class="showcase-caption">
-          <span>mosaic.app · mac-universal</span>
-          <span>prores 422 source</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CLI ============ -->
-  <section class="section" id="cli">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-path">~/mosaic/cli</div>
-        <h2 class="section-title">mosaic-cli — the same pipelines, scriptable</h2>
-        <p class="section-sub">For batch jobs, headless servers and CI. Paths go to stdout and the summary to stderr, so output pipes straight into <code>xargs</code> without filtering. Same ffmpeg requirements as the app.</p>
-      </div>
-
-      <div class="terminal" id="terminal">
-        <div class="terminal-bar">
-          <div class="terminal-bar-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="terminal-bar-title">zsh — mosaic-cli</div>
-          <div class="terminal-bar-meta">real output</div>
-        </div>
-
-        <div class="terminal-body" id="terminal-body">
-
-          <span class="tline cmd">mosaic-cli --version</span>
-          <span class="tline out">mosaic-cli <span class="hi" id="line-version">0.1.6</span></span>
-          <span class="tspace"></span>
-
-          <span class="tline cmd">mosaic-cli --help</span>
-          <span class="tline bright">Video contact sheets, screenshots, previews, and animated sheets</span>
-          <span class="tspace"></span>
-          <span class="tline out">Usage: mosaic-cli &lt;COMMAND&gt;</span>
-          <span class="tspace"></span>
-          <span class="tline out">Commands:</span>
-          <span class="tline out">  screenshots     Capture individual frames from a video</span>
-          <span class="tline out">  sheet           Generate a still contact sheet (grid of thumbnails)</span>
-          <span class="tline out">  reel            Generate an animated preview reel from short clips</span>
-          <span class="tline out">  animated-sheet  Generate an animated contact sheet (grid of animated clips)</span>
-          <span class="tline out">  probe           Print ffprobe/mediainfo metadata as JSON</span>
-          <span class="tline out">  completions     Emit a shell-completion script to stdout</span>
-          <span class="tline out">  manpage         Emit a roff man page to stdout</span>
-          <span class="tspace"></span>
-
-          <span class="tline cmd">mosaic-cli sheet ~/films/arrival.mkv --cols 5 --rows 4</span>
-          <span class="tline out">/Users/you/films/arrival_sheet.png</span>
-          <span class="tline amber">1 done · 0 failed · 0 cancelled</span>
-          <span class="tspace"></span>
-
-          <span class="tline cmd">mosaic-cli screenshots ~/films/arrival.mkv -o ./out --count 4</span>
-          <span class="tline out">/Users/you/out/arrival_screens_01.png</span>
-          <span class="tline out">/Users/you/out/arrival_screens_02.png</span>
-          <span class="tline out">/Users/you/out/arrival_screens_03.png</span>
-          <span class="tline out">/Users/you/out/arrival_screens_04.png</span>
-          <span class="tline amber">1 done · 0 failed · 0 cancelled</span>
-          <span class="tspace"></span>
-
-          <span class="tline cmd">mosaic-cli probe arrival.mkv | jq -c '.video | {codec, width, height, is_hdr}'</span>
-          <span class="tline out">{"codec":"hevc","width":3840,"height":2160,"is_hdr":true}</span>
-          <span class="tspace"></span>
-
-          <span class="tline out"># stdout is paths-only — the summary goes to stderr</span>
-          <span class="tline cmd">mosaic-cli sheet ~/films/ -o ./sheets | xargs -n1 basename</span>
-          <span class="tline out">arrival_sheet.png</span>
-          <span class="tline out">dune_sheet.png</span>
-          <span class="tline out">sicario_sheet.png</span>
-          <span class="tspace"></span>
-
-          <span class="tline cmd"><span class="cursor"></span></span>
-        </div>
-      </div>
-
-      <div class="cli-install">
-        <div class="terminal terminal-compact">
-          <div class="terminal-bar">
-            <div class="terminal-bar-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-            <div class="terminal-bar-title">install mosaic-cli</div>
-            <div class="terminal-bar-meta">one-liner</div>
+          <div class="output-body">
+            <h3>Contact sheet <span class="formats">PNG · JPEG</span></h3>
+            <p>A grid of timestamped frames with the file's details on top.</p>
           </div>
-          <div class="terminal-body">
-            <span class="tline out"># macOS &amp; Linux</span>
-            <span class="tline cmd">curl -LsSf https://mosaicvideo.github.io/install.sh | sh</span>
-            <span class="tspace"></span>
-            <span class="tline out"># Windows (PowerShell)</span>
-            <span class="tline cmd">irm https://mosaicvideo.github.io/install.ps1 | iex</span>
+        </li>
+        <li class="card output">
+          <div class="output-media">
+            <img class="contain" src="assets/screenshots/output-screenshots.webp" width="1600" height="450" alt="Four full-size screenshots taken at even intervals" loading="lazy">
           </div>
-        </div>
-        <p class="cli-install-hint">Verifies the SHA-256 checksum, installs to a user-scoped directory, and prints next steps. <a href="cli.html">Full CLI docs &amp; manual install →</a></p>
+          <div class="output-body">
+            <h3>Screenshots <span class="formats">PNG · JPEG</span></h3>
+            <p>Full-size frames taken at even intervals through the video.</p>
+          </div>
+        </li>
+        <li class="card output">
+          <div class="output-media">
+            <img src="assets/screenshots/output-animated-reel.webp" width="480" height="270" alt="An animated preview made of short clips" loading="lazy">
+          </div>
+          <div class="output-body">
+            <h3>Animated preview <span class="formats">WebP · WebM · GIF</span></h3>
+            <p>Short clips joined into one looping preview.</p>
+          </div>
+        </li>
+        <li class="card output">
+          <div class="output-media">
+            <img class="contain" src="assets/screenshots/output-animated-sheet.webp" width="638" height="374" alt="An animated contact sheet: a three-by-three grid of looping clips from Big Buck Bunny, each stamped with its time" loading="lazy" decoding="async">
+          </div>
+          <div class="output-body">
+            <h3>Animated contact sheet <span class="formats">WebP</span></h3>
+            <p>A contact sheet where every frame is a moving clip.</p>
+            <p class="credit"><a href="https://peach.blender.org/">Big Buck Bunny</a> © Blender Foundation, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="features-heading">
+      <div class="section-head">
+        <h2 id="features-heading">Batch thumbnails for big folders</h2>
       </div>
-    </div>
-  </section>
+      <ul class="features">
+        <li class="card feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h12"/></svg></div>
+          <h3>Batch queue</h3>
+          <p>Drop whole folders, watch each file's progress, and cancel at any point.</p>
+        </li>
+        <li class="card feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"/></svg></div>
+          <h3>HDR looks right</h3>
+          <p>HDR10, HLG and Dolby Vision come out with natural colors, not washed out.</p>
+        </li>
+        <li class="card feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>Stays on your computer</h3>
+          <p>Nothing is uploaded and nothing is tracked. Your videos never leave your machine.</p>
+        </li>
+      </ul>
+    </section>
 
-</main>
+    <section class="section" aria-labelledby="cli-heading">
+      <div class="card cli">
+        <div class="section-head">
+          <h2 id="cli-heading">Command-line thumbnail generator</h2>
+          <p>mosaic-cli runs the same four outputs from scripts and servers.</p>
+          <a class="link" href="cli.html">CLI reference</a>
+        </div>
+        <pre class="code"><span class="comment"># macOS and Linux</span>
+curl -LsSf https://mosaicvideo.github.io/install.sh | sh
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-left">
-      <span class="version-badge" id="version-badge">latest</span>
-      <span>MIT</span>
-    </div>
-    <div class="footer-mark">mosaic</div>
-    <div class="footer-right">
-      <a href="https://github.com/mosaicvideo/mosaic">git</a>
-      <a href="https://github.com/mosaicvideo/mosaic/issues">issues</a>
-      <a href="https://github.com/mosaicvideo/mosaic/blob/main/CHANGELOG.md">log</a>
-    </div>
-  </div>
-</footer>
+<span class="comment"># Windows (PowerShell)</span>
+irm https://mosaicvideo.github.io/install.ps1 | iex</pre>
+      </div>
+    </section>
+  </main>
 
+  <footer class="footer">
+    <span>Mosaic is open source under the MIT license. It needs <a class="link" href="guide.html#requirements">ffmpeg and MediaInfo</a> installed.</span>
+    <ul>
+      <li><a href="https://github.com/mosaicvideo/mosaic">GitHub</a></li>
+      <li><a href="https://github.com/mosaicvideo/mosaic/issues">Issues</a></li>
+      <li><a href="https://github.com/mosaicvideo/mosaic/blob/main/CHANGELOG.md">Changelog</a></li>
+    </ul>
+  </footer>
+</div>
+
+<script src="assets/theme.js" defer></script>
 <script src="assets/download.js" defer></script>
 </body>
 </html>
