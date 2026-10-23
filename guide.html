@@ -48,7 +48,7 @@
       "name": "Why do I have to install ffmpeg myself?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bundling ffmpeg would triple the download and tie you to one build. Keeping it separate lets you update it on your own. When Mosaic starts, it checks for ffmpeg, ffprobe and mediainfo. If one is missing it shows how to install it, and if your ffmpeg can't do something an output needs, it says what to install instead."
+        "text": "Bundling ffmpeg would triple the download and tie you to one build. Keeping it separate lets you update it on your own. When Mosaic starts, it checks for ffmpeg, ffprobe and mediainfo. If one is missing it shows the install command, and on macOS and Windows it can run it for you. If your ffmpeg can't do something an output needs, it says what to install instead."
       }
     },
     {
@@ -255,19 +255,22 @@ sudo rpm -i Mosaic-*.x86_64.rpm                                  # Fedora, RHEL<
 
         <h2 id="requirements">Requirements</h2>
         <p>Mosaic uses <strong>ffmpeg</strong> to read and render video and <strong><a href="https://mediaarea.net/en/MediaInfo">MediaInfo</a></strong> for file details. Install both so that <code>ffmpeg</code>, <code>ffprobe</code> and <code>mediainfo</code> are on your <code>PATH</code>.</p>
+        <p>If either is missing when Mosaic starts, it shows the install command for your system, naming only what's missing, with a Copy button. On macOS and Windows, <strong>Install</strong> runs the command inside Mosaic and turns the app back on when it finishes. On Linux, copy it into a terminal. To install them yourself:</p>
 
         <h3 id="requirements-macos">macOS</h3>
-        <pre><code>brew install ffmpeg-full mediainfo</code></pre>
+        <pre><code>brew install ffmpeg-full media-info</code></pre>
         <p>Use <code>ffmpeg-full</code>, not plain <code>ffmpeg</code>. Homebrew's default build can't draw timestamps, write WebP or convert HDR. Mosaic picks <code>ffmpeg-full</code> automatically when it's installed.</p>
 
         <h3 id="requirements-windows">Windows</h3>
-        <pre><code>winget install Gyan.FFmpeg MediaArea.MediaInfo</code></pre>
+        <pre><code>winget install --exact --id Gyan.FFmpeg
+winget install --exact --id MediaArea.MediaInfo</code></pre>
         <p>Or with <a href="https://chocolatey.org/">Chocolatey</a>: <code>choco install ffmpeg-full mediainfo-cli</code>.</p>
 
         <h3 id="requirements-linux">Linux</h3>
         <pre><code>sudo apt install ffmpeg mediainfo      # Debian, Ubuntu
 sudo dnf install ffmpeg mediainfo      # Fedora
-sudo pacman -S ffmpeg mediainfo        # Arch</code></pre>
+sudo pacman -S ffmpeg mediainfo        # Arch
+sudo zypper install ffmpeg mediainfo   # openSUSE</code></pre>
 
         <h2 id="first-run">First run</h2>
         <ol>
@@ -285,7 +288,7 @@ sudo pacman -S ffmpeg mediainfo        # Arch</code></pre>
 
         <h3 id="contact-sheets">Contact sheets</h3>
         <p>A grid of frames taken evenly through the video, each stamped with its time, under a header with the file's size, length and codecs. Good for cataloging a library or checking what a file holds without playing it.</p>
-        <p>You can set the rows and columns, width, PNG or JPEG, quality, the header and the timestamps.</p>
+        <p>You can set the rows and columns, width, PNG or JPEG, quality, the header and the timestamps. The header's first line is the filename; turn on <em>Title from metadata</em> to show the title embedded in the file instead.</p>
         <figure>
           <img src="assets/screenshots/output-contact-sheet.webp" alt="A contact sheet: a grid of timestamped frames under a header of file details" width="1200" height="1443" loading="lazy" decoding="async">
         </figure>
@@ -334,7 +337,7 @@ irm https://mosaicvideo.github.io/install.ps1 | iex</code></pre>
         <div class="faq">
           <div>
             <h3>Why do I have to install ffmpeg myself?</h3>
-            <p>Bundling ffmpeg would triple the download and tie you to one build. Keeping it separate lets you update it on your own. When Mosaic starts, it checks for <code>ffmpeg</code>, <code>ffprobe</code> and <code>mediainfo</code>. If one is missing it shows how to install it, and if your ffmpeg can't do something an output needs, it says what to install instead.</p>
+            <p>Bundling ffmpeg would triple the download and tie you to one build. Keeping it separate lets you update it on your own. When Mosaic starts, it checks for <code>ffmpeg</code>, <code>ffprobe</code> and <code>mediainfo</code>. If one is missing it shows the install command, and on macOS and Windows it can run it for you. If your ffmpeg can't do something an output needs, it says what to install instead.</p>
           </div>
           <div>
             <h3>macOS says Apple could not verify Mosaic is free of malware</h3>

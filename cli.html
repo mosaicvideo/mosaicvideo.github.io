@@ -253,6 +253,7 @@ mosaic-cli animated-sheet --cols 4 --rows 3 movie.mkv</code></pre>
           <li><code>--theme dark|light</code> — color theme (default: <strong>dark</strong>)</li>
           <li><code>--no-timestamps</code> / <code>--timestamps</code> — toggle per-thumbnail timestamp overlay</li>
           <li><code>--no-header</code> / <code>--header</code> — toggle the metadata header band</li>
+          <li><code>--header-title</code> / <code>--no-header-title</code> — header's first line shows the title embedded in the file instead of the filename (default: filename)</li>
           <li><code>--suffix S</code> — filename infix (default: <strong><code>_sheet</code></strong>)</li>
         </ul>
         <pre><code>mosaic-cli sheet --cols 4 --rows 5 --width 2400 --theme light movie.mkv</code></pre>
@@ -288,12 +289,13 @@ mosaic-cli animated-sheet --cols 4 --rows 3 movie.mkv</code></pre>
           <li><code>--header-font PT</code> — header text size (default: <strong>18</strong>)</li>
           <li><code>--no-timestamps</code> / <code>--timestamps</code> — toggle per-thumbnail timestamp overlay</li>
           <li><code>--no-header</code> / <code>--header</code> — toggle the metadata header band</li>
+          <li><code>--header-title</code> / <code>--no-header-title</code> — header's first line shows the title embedded in the file instead of the filename (default: filename)</li>
           <li><code>--theme dark|light</code> — color theme (default: <strong>dark</strong>)</li>
           <li><code>--suffix S</code> — filename infix (default: <strong><code>_animated_sheet</code></strong>)</li>
         </ul>
 
         <h3 id="sub-probe"><code>probe</code></h3>
-        <p>Print the parsed ffprobe result as JSON. With <code>--mediainfo</code>, wraps both ffprobe and raw MediaInfo output in an envelope.</p>
+        <p>Print the parsed ffprobe result as JSON, including <code>duration_source</code>: where the length came from (<code>container</code>, <code>stream</code>, <code>mediainfo</code> or <code>frame_count</code>). With <code>--mediainfo</code>, wraps both ffprobe and raw MediaInfo output in an envelope.</p>
         <pre><code>mosaic-cli probe [--mediainfo] &lt;INPUT&gt;</code></pre>
         <pre><code>mosaic-cli probe movie.mkv | jq .duration_secs
 mosaic-cli probe --mediainfo movie.mkv | jq .ffprobe.video.color_transfer</code></pre>
